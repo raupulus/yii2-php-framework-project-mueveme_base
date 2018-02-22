@@ -1,0 +1,15 @@
+Login y logout
+Registrar un nuevo usuario
+Cambiar datos del usuario logueado
+Mostrar las noticias de portada
+"Mover" una noticia mediante AJAX
+Ver el detalle de una noticia
+Ver los comentarios de una noticia
+Votar positivo o negativo un comentario de una noticia
+Comentar una noticia
+Mostrar el número de "movimientos" de cada noticia
+Crear una noticia
+Subir una imagen a la noticia
+Poder buscar noticias por categorías
+Mostrar una lista de noticias candidatas a portada
+Responder a un comentario
