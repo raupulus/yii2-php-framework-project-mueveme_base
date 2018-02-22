@@ -1,0 +1,4 @@
+usuarios(id,nombre,email,password,created_at,update_at)
+envios(id,url,titulo,entradilla,usuario_id,created_at,update_at)
+comentarios(id,texto,usuario_id,created_at,update_at)
+movimiento(usuario_id,envio_id,created_at) 
