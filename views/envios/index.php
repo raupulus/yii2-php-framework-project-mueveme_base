@@ -2,8 +2,10 @@
 
 /* @var $this yii\web\View */
 /* @var $models app\models\Envios */
-use yii\widgets\ListView;
+use yii\helpers\Html;
 
+use yii\widgets\ListView;
+use yii\widgets\ActiveForm;
 
 $this->title = Yii::$app->name;
 
@@ -32,13 +34,7 @@ $this->registerJs($js);
 ?>
 <div class="site-index">
 
-<?php if (Yii::$app->session->has('mensaje')): ?>
-    <div class='alert alert-success'>
-        <?= Yii::$app->session->get('mensaje')?>
 
-    </div>
-    <?php Yii::$app->session->remove('mensaje')?>
-<?php endif; ?>
 
     <div class="body-content">
         <?= ListView::widget(

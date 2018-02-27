@@ -43,8 +43,10 @@ AppAsset::register($this);
     ]);
 
     $items = [
-        ['label' => 'Inicio', 'url' => ['/site/index']],
+        ['label' => 'Portada', 'url' => ['/site/index']],
         ['label' =>'Crear una noticia', 'url'=>['/envios/create']],
+        ['label' =>'Últimas noticias', 'url'=>['/envios/ultimas']],
+        ['label'=>'Buscar noticia', 'url'=>['envios/buscar']],
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
     ];

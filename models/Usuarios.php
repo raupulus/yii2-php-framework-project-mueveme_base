@@ -143,6 +143,15 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getRespuestas()
+    {
+        return $this->hasMany(Respuestas::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getMovimientos()
     {
         return $this->hasMany(Movimientos::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
@@ -153,6 +162,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         if (parent::beforeSave($insert)) {
             if ($insert) {
                 $this->password = Yii::$app->security->generatePasswordHash($this->password);
+                $this->token_val = Yii::$app->security->generateRandomString();
             }
             if ($this->scenario === self::ESCENARIO_UPDATE) {
                 if ($this->password === '') {

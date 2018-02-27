@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Envios */
 
-$this->title = 'Crear un artículo';
+$this->title = 'Crear una noticia';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="envios-create">
@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'items'=>$items,
     ]) ?>
 
 </div>

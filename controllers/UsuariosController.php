@@ -3,9 +3,12 @@
 namespace app\controllers;
 
 use app\models\Usuarios;
+use app\models\UsuariosSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -42,6 +45,17 @@ class UsuariosController extends Controller
         ];
     }
 
+    public function actionIndex()
+    {
+        $searchModel = new UsuariosSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+           'searchModel' => $searchModel,
+           'dataProvider' => $dataProvider,
+       ]);
+    }
+
     /**
      * Creates a new Usuarios model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -52,12 +66,36 @@ class UsuariosController extends Controller
         $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['site/login', 'nombre' => $model->nombre]);
+            Yii::$app->mailer->compose()
+                ->setFrom(Yii::$app->params['adminEmail'])
+                ->setTo($model->email)
+                ->setSubject('Activación de cuenta')
+                ->setHtmlBody(Html::a('Activación de cuenta', Url::to(['usuarios/activar', 'token' => $model->token_val], true)))
+                ->send();
+            Yii::$app->session->setFlash('info', 'Se ha enviado un correo a la dirección indicada');
+
+            return $this->redirect(['site/index']);
         }
 
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionActivar($token = null)
+    {
+        $usuario = Usuarios::findOne(['token_val' => $token]);
+
+        if ($usuario !== null) {
+            $usuario->token_val = null;
+            $usuario->save();
+
+            Yii::$app->session->setFlash('success', 'La cuenta se ha activado correctamente');
+            return $this->redirect(['site/login', 'nombre' => $usuario->nombre]);
+        }
+
+        Yii::$app->session->setFlash('danger', 'La cuenta ya ha sido activada');
+        return $this->redirect(['site/login']);
     }
 
     /**

@@ -18,13 +18,18 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'entradilla')->textarea(['maxlength' => true, 'rows'=>5]) ?>
 
+
+    <?= $form->field($model, 'categoria_id')->dropdownList([
+        'Categorias'=>$items,
+    ]); ?>
+    <?= $form->field($model, 'imagen')->fileInput() ?>
+
     <!-- <?= $form->field($model, 'usuario_id')->textInput() ?> -->
 
 
 
-
     <div class="form-group">
-        <?= Html::submitButton('Crear artículo', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Crear', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

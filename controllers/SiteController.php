@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\ContactForm;
 use app\models\Envios;
 use app\models\LoginForm;
+use app\models\Usuarios;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -64,7 +65,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $models = new ActiveDataProvider([
-            'query' => Envios::find(),
+            'query' => Envios::getPortada(),
             'pagination' => [
                 'pageSize' => 4,
             ],
@@ -75,9 +76,8 @@ class SiteController extends Controller
             ],
         ]);
 
-        return $this->render('index', [
+        return $this->render('//envios/index', [
             'models' => $models,
-            'contador' => 0,
         ]);
     }
 
@@ -97,8 +97,17 @@ class SiteController extends Controller
         if ($nombre !== null) {
             $model->username = $nombre;
         }
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post())) {
+            $usuario = Usuarios::findOne(['nombre' => $model->username]);
+
+            if ($usuario->token_val !== null) {
+                Yii::$app->session
+                    ->setFlash('danger', 'No puede iniciar sesión, no tiene la cuenta activada');
+                return $this->redirect(['site/login']);
+            }
+            if ($model->login()) {
+                return $this->goBack();
+            }
         }
 
         $model->password = '';

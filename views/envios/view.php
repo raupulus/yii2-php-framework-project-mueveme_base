@@ -2,6 +2,7 @@
 
 use yii\data\SqlDataProvider;
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\ActiveForm;
@@ -102,7 +103,16 @@ $this->registerJs($js);
                 'value'=> $model->usuario->nombre,
             ],
             'created_at:datetime',
+            [
 
+                'label'=>'Categoría',
+                'value'=>$model->categoria->denominacion,
+            ],
+            [
+                'attribute' => 'Imagen',
+                'value' => $model->urlImagen,
+                'format' => 'image',
+            ],
         ],
     ]) ?>
     <hr>

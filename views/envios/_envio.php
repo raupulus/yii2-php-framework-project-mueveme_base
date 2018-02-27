@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 /* @var $models app\models\Envios */
+use yii\helpers\Url;
 use yii\helpers\Html;
 
 use yii\widgets\ActiveForm;
@@ -64,24 +65,39 @@ $this->registerJs($js);
                 </div>
             </div>
             <div class="col-md-10">
-                <h4><?= Html::a(Html::encode($model->titulo), $model->url) ?></h4>
-                <h6>
-                    Por <b><?= Html::encode($model->usuario->nombre) ?></b>
-                    &nbsp;&nbsp;<?= Yii::$app->formatter
-                    ->asDateTime($model->created_at)
-                    ?>
-                    , publicado: <?= Yii::$app->formatter
-                        ->asRelativeTime($model->created_at) ?>
-                </h6>
-                <p><?= Html::encode($model->entradilla) ?></p>
+                <div class='row'>
+                    <div class="col-md-10">
+                        <h4><?= Html::a(Html::encode($model->titulo), $model->url) ?></h4>
+                        <h6>
+                            Por <b><?= Html::encode($model->usuario->nombre) ?></b>
+                            &nbsp;&nbsp;<?= Yii::$app->formatter
+                            ->asDateTime($model->created_at)
+                            ?>
+                            , publicado: <?= Yii::$app->formatter
+                            ->asRelativeTime($model->created_at) ?>
+                        </h6>
+                        <p><?= Html::encode($model->entradilla) ?></p>
 
-                <?= Html::a('Ver mas información', ['envios/view', 'id'=>$model->id], ['class'=>'btn-xs btn-primary'])?>
-                <span class='label label-primary'>
-                    <?= $model->getComentarios()->count() ?> comentarios
-                </span>
+                        <span class='label label-primary'>
+                            <?= Html::a(
+                                $model->getComentarios()->count() . " comentarios",
+                                ['envios/view', 'id'=>$model->id],
+                                ['class'=>'btn-xs btn-primary'])
+                                ?>
+                        </span>
 
+                        &nbsp;
+                        <span class='label label-success'>
+                            <?= Html::encode($model->categoria->denominacion) ?>
+                        </span>
+                    </div>
+                    <div class="col-md-2">
+                        <?php if(file_exists(Url::to('@uploads/' . $model->id . '.jpg'))): ?>
+                            <?= Html::img($model->urlImagen) ?>
+                        <?php endif ?>
+                    </div>
+                </div>
                 <hr>
-
             </div>
         </div>
     </div>

@@ -2,20 +2,18 @@
 
 namespace app\controllers;
 
-use app\models\Comentarios;
-use app\models\ComentariosSearch;
 use app\models\Respuestas;
+use app\models\RespuestasSearch;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * ComentariosController implements the CRUD actions for Comentarios model.
+ * RespuestasController implements the CRUD actions for Respuestas model.
  */
-class ComentariosController extends Controller
+class RespuestasController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -29,7 +27,7 @@ class ComentariosController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
+            'acces' => [
                 'class' => AccessControl::className(),
                 'only' => ['create'],
                 'rules' => [
@@ -44,12 +42,12 @@ class ComentariosController extends Controller
     }
 
     /**
-     * Lists all Comentarios models.
+     * Lists all Respuestas models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ComentariosSearch();
+        $searchModel = new RespuestasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -59,51 +57,36 @@ class ComentariosController extends Controller
     }
 
     /**
-     * Displays a single Comentarios model.
+     * Displays a single Respuestas model.
      * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Respuestas::find()
-                ->where(['comentario_id' => $id])
-                ->orderBy(['created_at' => SORT_DESC]),
-        ]);
-
-
-        $respuesta = new Respuestas([
-            'comentario_id' => $id,
-        ]);
-
         return $this->render('view', [
-            'dataProvider' => $dataProvider,
             'model' => $this->findModel($id),
-            'respuesta' => $respuesta,
         ]);
     }
 
     /**
-     * Creates a new Comentarios model.
+     * Creates a new Respuestas model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Comentarios();
+        $model = new Respuestas();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['envios/view', 'id' => $model->envio_id]);
+            return $this->redirect(['envios/view', 'id' => $model->comentario->envio->id]);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->redirect(['comentarios/view', 'id' => $model->comentario_id]);
     }
 
     /**
-     * Updates an existing Comentarios model.
+     * Updates an existing Respuestas model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id
      * @return mixed
@@ -123,7 +106,7 @@ class ComentariosController extends Controller
     }
 
     /**
-     * Deletes an existing Comentarios model.
+     * Deletes an existing Respuestas model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id
      * @return mixed
@@ -137,15 +120,15 @@ class ComentariosController extends Controller
     }
 
     /**
-     * Finds the Comentarios model based on its primary key value.
+     * Finds the Respuestas model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id
-     * @return Comentarios the loaded model
+     * @return Respuestas the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Comentarios::findOne($id)) !== null) {
+        if (($model = Respuestas::findOne($id)) !== null) {
             return $model;
         }
 

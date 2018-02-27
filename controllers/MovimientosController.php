@@ -34,6 +34,8 @@ class MovimientosController extends Controller
     {
         $usuario_id = Yii::$app->user->identity->id;
         $envio_id = Yii::$app->request->post('envio_id');
+        // var_dump($_POST);
+        // die();
         $movimiento = new Movimientos([
             'usuario_id' => $usuario_id,
             'envio_id' => $envio_id,

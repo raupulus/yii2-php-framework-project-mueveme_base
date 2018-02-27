@@ -86,8 +86,37 @@ if (Yii::$app->user->isGuest) {
                 </span>
         <?php ActiveForm::end() ?>
 
+        <?php $numRespuestas = $model->getRespuestas()->count() ?>
+        &nbsp;&nbsp;<?= Html::a("$numRespuestas Respuestas", ['comentarios/view', 'id'=>$model->id], ['class'=>'btn-xs btn-info'])?>
     </div>
     <div class='panel-body'>
         <?= Html::encode($model->texto) ?>
     </div>
 </div>
+
+<?php
+    $ultimaRespuesta = $model->getRespuestas()
+        ->orderBy(['created_at'=>SORT_DESC])
+        ->limit(1)
+        ->one();
+
+?>
+
+<?php if ($ultimaRespuesta !== null): ?>
+    <div class='row'>
+        <div class='col-md-1'>
+        </div>
+        <div class='col-md-10'>
+            <div class='panel panel-info'>
+                <div class='panel-heading'>
+                    <?= Html::encode('Respuesta de ' . $ultimaRespuesta->usuario->nombre)?>
+                    <?= Html::encode(Yii::$app->formatter->asRelativeTime($ultimaRespuesta->created_at))?>
+                </div>
+                <div class='panel-body'>
+                    <?= Html::encode($ultimaRespuesta->texto)?>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

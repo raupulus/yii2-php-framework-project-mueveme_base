@@ -12,6 +12,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
+        '@uploads' => '@app/web/uploads',
     ],
     'language' => 'es-ES',
     'components' => [
@@ -34,32 +35,30 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
-            /*
+            'useFileTransport' => false,
+
             // comment the following array to send mail using php's mail function:
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.gmail.com',
-                'username' => $params['smtpUsername'],
+                'username' => $params['adminEmail'],
                 'password' => getenv('SMTP_PASS'),
                 'port' => '587',
                 'encryption' => 'tls',
             ],
-            */
         ],
         'log' => $log,
         'db' => $db,
         'formatter' => [
             'timeZone' => 'Europe/Madrid',
         ],
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
