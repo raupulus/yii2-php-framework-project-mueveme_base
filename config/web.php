@@ -6,11 +6,13 @@ $log = require __DIR__ . '/log.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Muéveme',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
+        '@uploads' => '@app/web/uploads',
     ],
     'language' => 'es-ES',
     'components' => [
@@ -51,14 +53,13 @@ $config = [
         'formatter' => [
             'timeZone' => 'Europe/Madrid',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'envios/detalles/<id:\d+>' => 'envios/detalles',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

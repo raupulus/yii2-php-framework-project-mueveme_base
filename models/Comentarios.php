@@ -33,7 +33,7 @@ class Comentarios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['texto', 'usuario_id', 'envio_id', 'created_at'], 'required'],
+            [['texto', 'envio_id'], 'required'],
             [['usuario_id', 'envio_id'], 'default', 'value' => null],
             [['usuario_id', 'envio_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
@@ -50,7 +50,7 @@ class Comentarios extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'texto' => 'Texto',
+            'texto' => 'Comentario',
             'usuario_id' => 'Usuario ID',
             'envio_id' => 'Envio ID',
             'created_at' => 'Created At',
@@ -72,5 +72,25 @@ class Comentarios extends \yii\db\ActiveRecord
     public function getUsuario()
     {
         return $this->hasOne(Usuarios::className(), ['id' => 'usuario_id'])->inverseOf('comentarios');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVotos()
+    {
+        return $this->hasMany(Votos::className(), ['comentario_id' => 'id'])->inverseOf('comentario');
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->usuario_id = Yii::$app->user->identity->id;
+                $this->created_at = date('Y-m-d H:i:s');
+            }
+            return true;
+        }
+        return false;
     }
 }

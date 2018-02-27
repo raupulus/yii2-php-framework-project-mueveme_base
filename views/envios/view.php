@@ -9,7 +9,7 @@ use yii\helpers\Html;
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="panel-title">
-            <?= Html::a($envio->titulo, $envio->url, [
+            <?= Html::a(Html::encode($envio->titulo), $envio->url, [
                 'target' => '_blank'
                 ]) ?>
 
@@ -65,32 +65,46 @@ use yii\helpers\Html;
                 </div>
             </div>
         </div>
-        <div class="col-md-10">
-            <small>
-                Creado por
-                <strong><?= $envio->usuario->nombre ?></strong>
-                <?= Yii::$app
-                ->formatter
-                ->asRelativeTime($envio->created_at) ?>
-            </small></br>
-            <?= $envio->entradilla ?>
-        </div>
+        <div class="col-md-7">
+            <div class="row" style="height:70px">
+                <small>
+                    Creado por
+                    <strong><?= Html::encode($envio->usuario->nombre) ?></strong>
+                    <?= Yii::$app
+                    ->formatter
+                    ->asRelativeTime($envio->created_at) ?>
+                </small><br>
+                <?= Html::encode($envio->entradilla) ?>
+            </div>
+            <!-- <hr> -->
+            <div class="row" >
+                <hr>
+                <span class="badge badge-warning text-center">
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    <?= Html::a(
+                        count($envio->comentarios). ' comentarios',
+                        [
+                            'envios/detalles',
+                            'id' => $envio->id,
+                        ],
+                        [
+                            'style' => ['color' => 'white'],
+                        ]
+                        ) ?>
+                    </span>
 
-        <div class="col-md-10">
-            <hr>
-            <span class="badge badge-warning text-center">
-                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                <?= Html::a(
-                    count($envio->comentarios). ' comentarios',
-                    [
-                        'envios/detalles',
-                        'id' => $envio->id,
-                    ],
-                    [
-                        'style' => ['color' => 'white'],
-                    ]
+            </div>
+        </div>
+        <div class="col-md-3">
+            <?php if ($envio->url_img !== null): ?>
+                <?= Html::img(
+                    $envio->url_img,
+                    ['class' => 'img-thumbnail']
                 ) ?>
-            </span>
+            <?php endif ?>
+        </div>
+        <div class="col-md-10">
+
         </div>
     </div>
 </div>

@@ -11,10 +11,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="usuarios-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="col-md-offset-2 col-md-8">
+    <h1 class="text-center"><?= Html::encode($this->title) ?></h1><br>
 
     <?= $this->render('_form', [
         'model' => $model,
-    ]) ?>
+        ]) ?>
+
+</div>
 
 </div>

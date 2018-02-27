@@ -5,6 +5,8 @@ use app\models\Categorias;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+use kartik\file\FileInput;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Envios */
 /* @var $form yii\widgets\ActiveForm */
@@ -25,6 +27,16 @@ use yii\widgets\ActiveForm;
                 ->select('nombre')
                 ->indexBy('id')
                 ->column()) ?>
+
+    <?= $form->field($model, 'foto')->widget(FileInput::classname(), [
+        'pluginOptions' => [
+            'showUpload' => false,
+            'browseClass' => 'btn btn-warning',
+        ],
+        'options' => [
+            'accept' => 'image/*',
+        ],
+    ]);?>
 
     <div class="form-group">
         <?= Html::submitButton('Publicar', ['class' => 'btn btn-success']) ?>

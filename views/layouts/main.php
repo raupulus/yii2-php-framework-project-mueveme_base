@@ -29,14 +29,20 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => Html::img('@web/logo.png', [
+                    'alt'=>Yii::$app->name,
+                    'width' => '20px',
+                    'style' => 'display: inline; margin-right: 10px'
+                ]) .
+                Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
     $items = [
         ['label' => 'Portada', 'url' => ['/site/index']],
+        ['label' => 'Nuevas', 'url' => ['/envios/candidatas']],
         ['label' => 'Publicar noticia', 'url' => ['/envios/create']],
         Yii::$app->user->isGuest ? (
             ['label' => 'Login', 'url' => ['/site/login']]
@@ -64,7 +70,12 @@ AppAsset::register($this);
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            'homeLink' => [
+                'label' => 'Portada',
+                'url' => ['site/index']
+            ]
         ]) ?>
+
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
@@ -72,9 +83,10 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right">
+            Desarrollado por <a href="https://github.com/jlnarvaez" target="_blank">jlnarvaez</a>
+            y <a href="https://github.com/rafabernal94" target="_blank">rafabernal94</a>
+        </p>
     </div>
 </footer>
 

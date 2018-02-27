@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    background-color: #fff6dd;
 }
 
 .wrap {
@@ -120,8 +121,8 @@ a.desc:after {
 }
 
 .comments-list .media{
-    border-bottom: 1px dotted #ccc;
-    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
 }
 
 .badge-warning {
@@ -130,4 +131,14 @@ a.desc:after {
 
 .badge-warning:hover {
   background-color: #c67605;
+}
+
+.text-grey {
+    color: grey;
+}
+
+.btn-votar {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-right: 5px;
 }

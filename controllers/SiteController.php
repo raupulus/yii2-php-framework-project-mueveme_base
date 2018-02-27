@@ -70,7 +70,12 @@ class SiteController extends Controller
             $noticias = $noticias->where(['categoria_id' => $categoria_id]);
         }
 
+        $min = Yii::$app->params['minMovimientos'];
         $noticias = $noticias
+            ->select('envios.*, COUNT(movimientos.*)')
+            ->joinWith('movimientos')
+            ->groupBy('envios.id')
+            ->having("COUNT(movimientos.*) >= $min")
             ->orderBy(['created_at' => SORT_DESC])
             ->all();
 

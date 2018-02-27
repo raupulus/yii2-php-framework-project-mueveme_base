@@ -2,7 +2,10 @@
 
 namespace app\models;
 
+use Spatie\Dropbox\Exceptions\BadRequest;
 use Yii;
+use yii\imagine\Image;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "envios".
@@ -13,6 +16,7 @@ use Yii;
  * @property string $entradilla
  * @property int $usuario_id
  * @property int $categoria_id
+ * @property string $url_img
  * @property string $created_at
  * @property string $updated_at
  *
@@ -24,11 +28,23 @@ use Yii;
 class Envios extends \yii\db\ActiveRecord
 {
     /**
+     * Contiene la foto de la noticia.
+     * @var UploadedFile
+     */
+    public $foto;
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'envios';
+    }
+
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), [
+            'foto', 'url_img',
+        ]);
     }
 
     /**
@@ -41,10 +57,11 @@ class Envios extends \yii\db\ActiveRecord
             [['usuario_id'], 'default', 'value' => null],
             [['url'], 'url', 'defaultScheme' => 'http'],
             [['categoria_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'url_img'], 'safe'],
             [['url', 'titulo', 'entradilla'], 'string', 'max' => 255],
             [['categoria_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categorias::className(), 'targetAttribute' => ['categoria_id' => 'id']],
             [['usuario_id'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_id' => 'id']],
+            [['foto'], 'file', 'extensions' => 'jpg'],
         ];
     }
 
@@ -63,6 +80,41 @@ class Envios extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function upload()
+    {
+        if ($this->foto === null) {
+            return true;
+        }
+        $nombre = Yii::getAlias('@uploads/') . $this->id . '.jpg';
+        $res = $this->foto->saveAs($nombre);
+        if ($res) {
+            Image::thumbnail($nombre, 200, null)->save($nombre);
+        }
+        return $res;
+    }
+
+    public function uploadDropbox()
+    {
+        $id = $this->id;
+        $fichero = "$id.jpg";
+        $client = new \Spatie\Dropbox\Client(getenv('DROPBOX_TOKEN'));
+        try {
+            $client->delete($fichero);
+        } catch (BadRequest $e) {
+            // No se hace nada
+        }
+
+        $client->upload(
+            $fichero,
+            file_get_contents(Yii::getAlias("@uploads/$fichero")),
+            'overwrite'
+        );
+        $res = $client->createSharedLinkWithSettings($fichero, [
+            'requested_visibility' => 'public',
+        ]);
+        return $res['url'];
     }
 
     /**

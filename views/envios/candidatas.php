@@ -8,7 +8,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 
-$this->title = 'Portada';
+$this->title = 'Nuevas';
 
 $url = Url::to(['movimientos/mover-ajax']);
 
@@ -37,10 +37,10 @@ $this->registerJs($js);
             <div class="col-md-offset-1 col-md-10">
                 <div class="row">
                     <div class="col-md-8">
-                        <h2>Noticias</h2>
+                        <h2>Noticias candidatas a portada</h2>
                     </div>
                     <div class="col-md-4">
-                        <?= Html::beginForm(['index'], 'get', [
+                        <?= Html::beginForm(['candidatas'], 'get', [
                             'class' => 'form-inline',
                             'style' => 'margin-top:20px'
                             ]) ?>
@@ -78,7 +78,7 @@ $this->registerJs($js);
                     <?php endforeach ?>
                 </div>
                 <?php else: ?>
-                    <h4>No hay noticias disponibles</h4>
+                    <h4>No hay noticias nuevas disponibles</h4>
                 <?php endif ?>
             </div>
         </div>
